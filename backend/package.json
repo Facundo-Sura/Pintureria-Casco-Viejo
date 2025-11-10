@@ -1,0 +1,43 @@
+{
+  "name": "pcv-server",
+  "version": "1.0.0",
+  "description": "servdor para pintureria casco viejo",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js",
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Facundo-Sura/Pintureria-Casco-Viejo.git"
+  },
+  "keywords": [
+    "pintureria",
+    "neuquen",
+    "centenario",
+    "pinturas",
+    "automotor",
+    "ferreteria",
+    "pintura"
+  ],
+  "author": "Facundo Sura",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Facundo-Sura/Pintureria-Casco-Viejo/issues"
+  },
+  "homepage": "https://github.com/Facundo-Sura/Pintureria-Casco-Viejo#readme",
+  "dependencies": {
+    "cloudinary": "^2.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4",
+    "postgres": "^3.4.7",
+    "sequelize": "^6.37.7"
+  }
+}
