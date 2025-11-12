@@ -1,7 +1,7 @@
 export default function Searchbar() {
   return (
-    <form className="border border-zinc-300 rounded-full p-2 flex items-center">
-      <input type="text" className="outline-none px-2" />
+    <form className="border border-zinc-300 rounded-full p-2 w-1/3 flex items-center">
+      <input type="text" className="outline-none w-full px-2" />
       <button>
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Aside from "@/components/Aside";
 
 export const metadata: Metadata = {
   title: "Pintureria Casco Viejo",
@@ -16,9 +17,14 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        <Header />
+        <div className="min-h-screen flex flex-col">
+      <Header />
+      <Aside />
+      <main className="flex-1 md:ml-64 pt-4 pb-24"> {/* Ajusta el padding para el footer */}
         {children}
-        <Footer />
+      </main>
+      <Footer />
+    </div>
       </body>
     </html>
   );
