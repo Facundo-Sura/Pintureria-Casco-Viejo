@@ -17,14 +17,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        <div className="min-h-screen flex flex-col">
       <Header />
-      <Aside />
-      <main className="flex-1 md:ml-64 pt-4 pb-24"> {/* Ajusta el padding para el footer */}
+      <main className="md:ml-64 p-4"> {/* Ajusta el padding para el footer */}
         {children}
       </main>
+      <Aside />
       <Footer />
-    </div>
       </body>
     </html>
   );
