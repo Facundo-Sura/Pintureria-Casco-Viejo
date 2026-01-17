@@ -74,7 +74,7 @@ export function HeroCarousel() {
                   className="w-full h-full object-cover"
                 />
                 {/* Overlay Gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-r ${slide.color} mix-blend-multiply`} />
+                <div className={`absolute inset-0 bg-linear-to-r ${slide.color} mix-blend-multiply`} />
                 <div className="absolute inset-0 bg-black/30" />
               </div>
 

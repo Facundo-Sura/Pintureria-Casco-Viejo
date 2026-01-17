@@ -8,7 +8,7 @@ export default function CartPage() {
   const { cart, removeFromCart, cartTotal, clearCart } = useCart();
 
   return (
-    <div className="min-h-screen p-8 font-[family-name:var(--font-geist-sans)] bg-gray-50">
+    <div className="min-h-screen p-8 font-(family-name:--font-geist-sans) bg-gray-50">
       <div className="max-w-6xl mx-auto">
         <Link href="/" className="flex items-center gap-2 mb-8 hover:underline text-blue-600">
             <ArrowLeft size={20} />
@@ -30,7 +30,7 @@ export default function CartPage() {
                 <div className="lg:col-span-2 space-y-4">
                     {cart.map((item) => (
                         <div key={item.id} className="bg-white p-6 rounded-lg shadow-sm flex flex-col sm:flex-row gap-6 items-center sm:items-start">
-                            <div className="h-24 w-24 bg-gray-200 rounded-md flex-shrink-0 overflow-hidden">
+                            <div className="h-24 w-24 bg-gray-200 rounded-md shrink-0 overflow-hidden">
                                 {item.image ? (
                                     <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
                                 ) : (

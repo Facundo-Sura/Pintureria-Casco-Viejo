@@ -134,7 +134,7 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8 font-[family-name:var(--font-geist-sans)]">
+    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8 ">
       <div className="max-w-7xl mx-auto">
         <Link href="/" className="flex items-center gap-2 mb-8 text-gray-600 hover:text-red-600 transition-colors">
           <ArrowLeft size={20} />

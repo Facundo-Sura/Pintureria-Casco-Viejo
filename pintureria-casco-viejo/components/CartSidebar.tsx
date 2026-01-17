@@ -49,7 +49,7 @@ export function CartSidebar() {
               <ul className="space-y-4">
                 {cart.map((item) => (
                   <li key={item.id} className="flex py-2 border-b last:border-0">
-                    <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-md border border-gray-200">
                       {item.image ? (
                         <img
                           src={item.image}

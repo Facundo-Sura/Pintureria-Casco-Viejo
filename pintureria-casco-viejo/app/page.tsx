@@ -7,7 +7,7 @@ import { Paintbrush, ShieldCheck, Truck, ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen font-[family-name:var(--font-geist-sans)]">
+    <div className="min-h-screen font-(family-name:--font-geist-sans)">
       {/* 1. Hero Carousel (Full Screen Images) */}
       <HeroCarousel />
 

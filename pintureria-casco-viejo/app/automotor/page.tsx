@@ -4,7 +4,7 @@ import { ProductList } from '../../components/ProductList';
 
 export default function Page() {
   return (
-    <div className="min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
+    <div className="min-h-screen p-8 font-(family-name:--font-geist-sans)">
       <Link href="/" className="flex items-center gap-2 mb-8 hover:underline text-red-600">
         <ArrowLeft size={20} />
         Volver al inicio

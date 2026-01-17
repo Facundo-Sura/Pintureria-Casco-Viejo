@@ -33,7 +33,7 @@ export function LoginModal() {
             <div className="sm:flex sm:items-start w-full">
               <div className="w-full">
                 <div className="flex justify-between items-center mb-6">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
                         <User className="h-6 w-6 text-blue-600" aria-hidden="true" />
                     </div>
                     <button 
@@ -74,7 +74,7 @@ export function LoginModal() {
                         </div>
                         <button
                             type="submit"
-                            className="w-full rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                            className="w-full rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                         >
                             Ingresar
                         </button>

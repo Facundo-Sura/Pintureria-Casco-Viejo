@@ -32,7 +32,7 @@ const Header: React.FC = () => {
       <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-40">
         <div className="px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between gap-4">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 flex items-center">
+          <Link href="/" className="flex items-center">
             <Image 
               src="/logo.png" 
               alt="logo" 
@@ -48,7 +48,7 @@ const Header: React.FC = () => {
           </div>
 
           {/* Desktop Menu */}
-          <nav className="hidden md:flex flex-shrink-0 items-center justify-center gap-6">
+          <nav className="hidden md:flex items-center justify-center gap-6">
             {user ? (
                 <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-gray-700">Hola, {user.email.split('@')[0]}</span>
