@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Aside from "@/components/Aside";
+import { AuthProvider } from "../context/AuthContext";
+import { CartProvider } from "../context/CartContext";
+import { CartSidebar } from "../components/CartSidebar";
+import { LoginModal } from "../components/LoginModal";
 
 export const metadata: Metadata = {
   title: "Pintureria Casco Viejo",
@@ -17,12 +20,17 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-      <Header />
-      <main className="md:ml-64 p-4"> {/* Ajusta el padding para el footer */}
-        {children}
-      </main>
-      <Aside />
-      <Footer />
+        <AuthProvider>
+          <CartProvider>
+            <Header />
+            <CartSidebar />
+            <LoginModal />
+            <main className="pt-32 p-4 min-h-screen bg-gray-50">
+              {children}
+            </main>
+            <Footer />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

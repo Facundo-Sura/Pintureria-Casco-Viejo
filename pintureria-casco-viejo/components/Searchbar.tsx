@@ -1,8 +1,12 @@
 export default function Searchbar() {
   return (
-    <form className="border border-zinc-300 rounded-full p-2 w-1/3 flex items-center">
-      <input type="text" className="outline-none w-full px-2" />
-      <button>
+    <form className="border border-zinc-300 rounded-full p-2 w-full flex items-center bg-gray-50">
+      <input 
+        type="text" 
+        className="outline-none w-full px-4 bg-transparent text-sm" 
+        placeholder="Buscar productos..."
+      />
+      <button className="p-2 text-gray-500 hover:text-red-600 transition-colors">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"

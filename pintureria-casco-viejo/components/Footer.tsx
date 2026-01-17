@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
     return(
-        <footer className="relative bottom-0 left-0 right-0 bg-gray-100 p-8 shadow-md z-20 px-8 grid grid-cols-1 md:grid-cols-3 gap-10">
+        <footer className="bg-red-950 text-white relative bottom-0 left-0 right-0 p-8 shadow-md z-20 px-8 grid grid-cols-1 md:grid-cols-3 gap-10">
         <div>
           <Image src="/logo_169.png" alt="logo" width={200} height={100} />
           <p>La mejor pintureria del pais</p>

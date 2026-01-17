@@ -3,147 +3,174 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Searchbar from "./Searchbar";
+import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
+import { User, ShoppingCart, Menu, X } from "lucide-react";
+
+const categories = [
+  { name: "Casa", href: "/casa" },
+  { name: "Oficina", href: "/oficina" },
+  { name: "Automotor", href: "/automotor" },
+  { name: "Ferretería", href: "/ferreteria" },
+  { name: "Pileta", href: "/pileta" },
+  { name: "Tutoriales", href: "/tutoriales" },
+];
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { openLoginModal, user, logout } = useAuth();
+  const { toggleSidebar, cart } = useCart();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 bg-white px-4 sm:px-6 lg:px-8 shadow-md z-50 flex items-center justify-between h-16 md:h-20">
-        {/* Logo */}
-        <div className="flex items-center">
-          <Image 
-            src="/logo.png" 
-            alt="logo" 
-            width={60} 
-            height={60} 
-            className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
-          />
+      <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-40">
+        <div className="px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between gap-4">
+          {/* Logo */}
+          <Link href="/" className="flex-shrink-0 flex items-center">
+            <Image 
+              src="/logo.png" 
+              alt="logo" 
+              width={60} 
+              height={60} 
+              className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
+            />
+          </Link>
+
+          {/* Desktop Search - Centered */}
+          <div className="hidden md:block flex-1 max-w-2xl mx-auto px-8">
+            <Searchbar />
+          </div>
+
+          {/* Desktop Menu */}
+          <nav className="hidden md:flex flex-shrink-0 items-center justify-center gap-6">
+            {user ? (
+                <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-gray-700">Hola, {user.email.split('@')[0]}</span>
+                    <button onClick={logout} className="text-sm text-red-600 hover:underline">Salir</button>
+                </div>
+            ) : (
+              <button 
+                  onClick={openLoginModal}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors flex flex-col items-center text-gray-600"
+                  aria-label="Iniciar sesión"
+              >
+                  <User size={24} />
+              </button>
+            )}
+
+            <button 
+              onClick={toggleSidebar}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors relative text-gray-600"
+              aria-label="Carrito de compras"
+            >
+              <ShoppingCart size={24} />
+              {cartCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                      {cartCount}
+                  </span>
+              )}
+            </button>
+          </nav>
+
+          {/* Mobile actions */}
+          <div className="flex items-center gap-4 md:hidden">
+            <button 
+              onClick={toggleSidebar}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors relative text-gray-600 mr-2"
+            >
+              <ShoppingCart size={24} />
+              {cartCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                      {cartCount}
+                  </span>
+              )}
+            </button>
+
+            {/* Hamburger Menu Button */}
+            <button
+              onClick={toggleMenu}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-600"
+              aria-label="Menú"
+              aria-expanded={isOpen}
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
-          <Searchbar />
-
-        {/* Desktop Menu */}
-        <nav className="hidden md:flex items-center justify-center gap-6">
-          <Link 
-            href="/login" 
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Iniciar sesión"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="currentColor"
-              className="bi bi-person-fill"
-              viewBox="0 0 16 16"
-            >
-              <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-            </svg>
-          </Link>
-          <Link 
-            href="/cart" 
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors relative"
-            aria-label="Carrito de compras"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="currentColor"
-              className="bi bi-cart-fill"
-              viewBox="0 0 16 16"
-            >
-              <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-            </svg>
-          </Link>
-        </nav>
-
-        <div className="flex items-center gap-4 md:hidden">
-          {/* Hamburger Menu Button */}
-          <button
-            onClick={toggleMenu}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Menú"
-            aria-expanded={isOpen}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              {isOpen ? (
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-              ) : (
-                <path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-              )}
-            </svg>
-          </button>
+        {/* Sub Menu Categories - Slim */}
+        <div className="hidden md:block border-t border-gray-100 bg-gray-50/50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-center gap-8 py-2 text-sm font-medium text-gray-600">
+                    {categories.map((category) => (
+                    <Link
+                        key={category.href}
+                        href={category.href}
+                        className="hover:text-red-600 transition-colors"
+                    >
+                        {category.name}
+                    </Link>
+                    ))}
+                </div>
+            </div>
         </div>
       </header>
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
+        <div className="fixed inset-0 z-30 md:hidden mt-16">
           {/* Backdrop */}
           <div 
-            className="absolute inset-0 bg-black/75 bg-opacity-50"
+            className="absolute inset-0 bg-black bg-opacity-50"
             onClick={toggleMenu}
           />
           
           {/* Menu Panel */}
-          <div className="absolute top-16 right-0 w-full bg-white shadow-lg rounded-bl-2xl">
-            <nav className="p-4">
-              <div className="space-y-2">
-                <Link
-                  href="/login"
-                  className="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-lg transition-colors"
-                  onClick={toggleMenu}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    fill="currentColor"
-                    className="bi bi-person-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                  </svg>
-                  <span>Iniciar Sesión</span>
-                </Link>
+          <div className="absolute inset-x-0 top-0 bg-white p-4 shadow-lg">
+             <div className="mb-4">
+                 <Searchbar />
+             </div>
+             <div className="flex flex-col gap-4">
+                {user ? (
+                    <div className="flex flex-col gap-2 border-b pb-4">
+                        <span className="font-medium">Usuario: {user.email}</span>
+                        <button onClick={logout} className="text-left text-red-600">Cerrar Sesión</button>
+                    </div>
+                ) : (
+                    <button 
+                        onClick={() => {
+                            openLoginModal();
+                            toggleMenu();
+                        }}
+                        className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded"
+                    >
+                        <User size={20} /> Iniciar Sesión
+                    </button>
+                )}
                 
-                <Link
-                  href="/cart"
-                  className="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-lg transition-colors"
-                  onClick={toggleMenu}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    fill="currentColor"
-                    className="bi bi-cart-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-                  </svg>
-                  <span>Carrito</span>
-                </Link>
-              </div>
-            </nav>
+                <div className="border-t pt-4">
+                    <p className="font-bold text-gray-500 mb-2">Categorías</p>
+                    {categories.map((category) => (
+                      <Link
+                        key={category.href}
+                        href={category.href}
+                        className="block p-2 hover:bg-gray-50"
+                        onClick={toggleMenu}
+                      >
+                        {category.name}
+                      </Link>
+                    ))}
+                </div>
+             </div>
           </div>
         </div>
       )}
-
-      {/* Spacer para evitar que el contenido quede detrás del header fijo */}
-      <div className="h-16 md:h-20" />
     </>
   );
 };
