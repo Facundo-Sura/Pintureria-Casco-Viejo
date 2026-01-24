@@ -31,16 +31,7 @@ export function ProductList({ category }: ProductListProps) {
         setProducts(filtered);
       } catch (error) {
         console.error("Error fetching products:", error);
-        // Fallback mock data if API fails (for demo purposes so the UI isn't empty)
-        const mockProducts: Product[] = Array.from({ length: 6 }).map((_, i) => ({
-            id: `${category}-${i}`,
-            name: `Producto ${category} ${i + 1}`,
-            price: 10000 + (i * 1000),
-            image: '',
-            category: category,
-            description: 'Descripción del producto simulado.'
-        }));
-        setProducts(mockProducts);
+        setProducts([]);
       } finally {
         setLoading(false);
       }

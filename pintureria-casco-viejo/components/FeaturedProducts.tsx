@@ -21,14 +21,7 @@ export function FeaturedProducts() {
         setProducts(data.slice(0, 4));
       } catch (error) {
         console.error("Error fetching products:", error);
-        // Fallback mock data
-        const mockProducts: Product[] = [
-            { id: 'f1', name: 'Látex Interior Mate', price: 15000, image: '', category: 'Casa', description: 'Alta cobertura' },
-            { id: 'f2', name: 'Esmalte Sintético', price: 12000, image: '', category: 'Ferreteria', description: 'Secado rápido' },
-            { id: 'f3', name: 'Impermeabilizante', price: 25000, image: '', category: 'Casa', description: 'Para techos' },
-            { id: 'f4', name: 'Barniz Marino', price: 18000, image: '', category: 'Casa', description: 'Protección UV' },
-        ];
-        setProducts(mockProducts);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
