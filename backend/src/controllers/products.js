@@ -1,4 +1,5 @@
 const Product = require("../models/Products");
+const { Op } = require("sequelize");
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
@@ -75,7 +76,7 @@ const createNewProduct = async (req, res) => {
     const filePublicIds = [];
     const fileTypes = [];
 
-    if (req.fiels && req.files.length > 0) {
+    if (req.files && req.files.length > 0) {
       for (const file of req.files) {
         const isVideo = file.mimetype.startsWith("video/");
         const folder = "products";
@@ -85,10 +86,16 @@ const createNewProduct = async (req, res) => {
           resource_type: isVideo ? "video" : "image",
         };
 
-        const result = await cloudinary.uploader.upload(
-          file.path,
-          uploadOptions
-        );
+        const result = await new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            uploadOptions,
+            (err, res) => {
+              if (err) reject(err);
+              else resolve(res);
+            }
+          );
+          stream.end(file.buffer);
+        });
 
         fileUrls.push(result.secure_url);
         filePublicIds.push(result.public_id);
@@ -96,35 +103,35 @@ const createNewProduct = async (req, res) => {
       }
 
       productData.image = fileUrls[0];
-      productData.image_public_id = filePublicIds[0];
+      productData.public_image_id = filePublicIds[0];
       productData.images = fileUrls;
-      productData.images_public_ids = filePublicIds;
+      productData.public_images_ids = filePublicIds;
       productData.file_types = fileTypes;
     }
     // convertir campos numéricos
     if (req.body.price) productData.price = parseFloat(req.body.price);
     if (req.body.stock) productData.stock = parseInt(req.body.stock);
+    if (req.body.categoryId) productData.CategoryId = req.body.categoryId;
 
-    const newProduct = await Product.crate(productData);
+    const newProduct = await Product.create(productData);
     res.status(201).json({
-      message: "Producto crado exitosamente",
+      message: "Producto creado exitosamente",
       product: newProduct,
     });
   } catch (error) {
     console.error("Error", error);
     //limpiar archivos subidos en caso de error
-    if (req.file && req.file.length > 0) {
-      for (const file of req.file) {
-        try {
-          const publicId = file.filename;
+    if (Array.isArray(req.files) && req.files.length > 0) {
+      try {
+        for (let i = 0; i < filePublicIds.length; i++) {
+          const publicId = filePublicIds[i];
+          const resourceType = fileTypes[i] === "video" ? "video" : "image";
           await cloudinary.uploader.destroy(publicId, {
-            resourse_type: file.mimetype.startsWith("video/")
-              ? "video"
-              : "image",
+            resource_type: resourceType,
           });
-        } catch (deleteError) {
-          console.error("Error eliminando archivo de Cloudinary:", deleteError);
         }
+      } catch (deleteError) {
+        console.error("Error eliminando archivo de Cloudinary:", deleteError);
       }
     }
   }
@@ -140,9 +147,9 @@ const updateProduct = async (req, res) => {
     }
     const updateData = { ...req.body };
 
-    const existingFiles = actualProduct.images || [];
-    const existingPublicIds = actualProduct.images_public_ids || [];
-    const existingTypes = actualProduct.file_types || [];
+    const existingFiles = product.images || [];
+    const existingPublicIds = product.public_images_ids || [];
+    const existingTypes = product.file_types || [];
 
     if (req.files && req.files.length > 0) {
       const newFilesUrls = [...existingFiles];
@@ -150,31 +157,37 @@ const updateProduct = async (req, res) => {
       const newTypes = [...existingTypes];
 
       for (const file of req.files) {
-        const isVideo = file.mimetype.startsWith("vodeo/");
+        const isVideo = file.mimetype.startsWith("video/");
         const folder = "products";
 
         const uploadOptions = {
-          folder: isVideo ? `&{folder}/videos` : `${folder}/images`,
-          resourse_type: isVideo ? "video" : "image",
+          folder: isVideo ? `${folder}/videos` : `${folder}/images`,
+          resource_type: isVideo ? "video" : "image",
         };
 
-        const result = await cloudinary.uploader.upload(
-          file.path,
-          uploadOptions
-        );
+        const result = await new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            uploadOptions,
+            (err, res) => {
+              if (err) reject(err);
+              else resolve(res);
+            }
+          );
+          stream.end(file.buffer);
+        });
 
-        newFilesUrls.path(result.secure_url);
+        newFilesUrls.push(result.secure_url);
         newPublicIds.push(result.public_id);
         newTypes.push(isVideo ? "video" : "image");
       }
 
       updateData.images = newFilesUrls;
-      updateData.images_public_ids = newPublicIds;
+      updateData.public_images_ids = newPublicIds;
       updateData.file_types = newTypes;
 
       if (newFilesUrls.length > 0) {
         updateData.image = newFilesUrls[0];
-        updateData.image_public_id = newPublicIds[0];
+        updateData.public_image_id = newPublicIds[0];
       }
     }
     //convertir campos numéricos
@@ -213,9 +226,9 @@ const deleteProduct = async (req, res) => {
     }
 
     // Eliminar archivos de cloudinary
-    if (product.images_public_ids && Array.isArray(product.images_public_ids)) {
-      for (let i = 0; i < product.images_public_ids.length; i++) {
-        const publicId = product.images_public_ids[i];
+    if (product.public_images_ids && Array.isArray(product.public_images_ids)) {
+      for (let i = 0; i < product.public_images_ids.length; i++) {
+        const publicId = product.public_images_ids[i];
         const resourceType =
           product.file_types[i] === "video" ? "video" : "image";
         await cloudinary.uploader.destroy(publicId, {

@@ -4,6 +4,13 @@ const morgan = require('morgan');
 
 const app = express();
 
+const Product = require('./models/Products');
+const Category = require('./models/Categories');
+
+// Associations
+Category.hasMany(Product);
+Product.belongsTo(Category);
+
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());

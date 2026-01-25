@@ -46,30 +46,30 @@ const Product = database.define(
         this.setDataValue("images", JSON.stringify(arrayValue));
       },
     },
-    pucblic_image_id: {
+    public_image_id: {
       type: DataTypes.STRING,
       allowNull: true,
       comment: "ID publico de la imagen principal en Cloudinary",
     },
-    pulic_images_ids: {
+    public_images_ids: {
       type: DataTypes.JSON,
       allowNull: true,
       defaultValue: [],
       get() {
-        const rawValue = this.getDataValue("ids_imagenes_publicas");
+        const rawValue = this.getDataValue("public_images_ids");
         try {
           if (!rawValue || rawValue === "null" || rawValue === '""') {
             return [];
           }
           return typeof rawValue === "string" ? JSON.parse(rawValue) : rawValue;
         } catch (error) {
-          console.error("Error parsing ids_imagenes_publicas: ", error);
+          console.error("Error parsing public_images_ids: ", error);
           return [];
         }
       },
       set(value) {
         const arrayValue = Array.isArray(value) ? value : [];
-        this.setDataValue("ids_imagenes_publicas", JSON.stringify(arrayValue));
+        this.setDataValue("public_images_ids", JSON.stringify(arrayValue));
       },
     },
     file_types: {
@@ -113,3 +113,5 @@ const Product = database.define(
     updatedAt: "updated_at",
   }
 );
+
+module.exports = Product;

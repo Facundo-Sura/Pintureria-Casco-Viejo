@@ -12,7 +12,7 @@ const storage = new ClodinaryStorage({
   cloudinary: cloudinary,
   params: (req, file) => {
     const isVideo = file.mimetype.starsWith("video/");
-    const folder = req.baseUrl.includes("products");
+    const folder = req.baseUrl.includes("products/");
 
     const baseParams = {
       folder: isVideo ? `${folder}/videos` : `${folder}/images`,
