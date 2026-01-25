@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Product } from '../../../context/CartContext';
 import { Category } from './types';
 
@@ -18,8 +18,23 @@ export default function ProductForm({ initialData, categories, onSave, onCancel 
   const [filesInput, setFilesInput] = useState<File[]>([]);
   const [removedPublicIds, setRemovedPublicIds] = useState<string[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
-    categories.find(c => c.name === initialData.category)?.id || null
+    categories.find(c => c.name === initialData.category)?.id.toString() || null
   );
+
+  // Efecto para reiniciar el formulario cuando cambia el ID del producto (cambio de producto o nuevo)
+  useEffect(() => {
+    setFormData(initialData);
+    setStockInput(initialData.stock ?? 0);
+    setBrandInput(initialData.brand ?? '');
+    setFilesInput([]);
+    setRemovedPublicIds([]);
+  }, [initialData.id]);
+
+  // Efecto separado para sincronizar la categoría seleccionada cuando cargan las categorías o cambia el producto
+  useEffect(() => {
+    const cat = categories.find(c => c.name === initialData.category);
+    setSelectedCategoryId(cat ? String(cat.id) : null);
+  }, [initialData.category, categories]);
 
   const handleSubmit = async () => {
     const fd = new FormData();
@@ -62,7 +77,8 @@ export default function ProductForm({ initialData, categories, onSave, onCancel 
           onChange={e => {
             const id = e.target.value || null;
             setSelectedCategoryId(id);
-            const cat = categories.find(c => c.id === id);
+            // Comparar usando String() para asegurar coincidencia con id numérico o string
+            const cat = categories.find(c => String(c.id) === id);
             setFormData(p => ({ ...p, category: cat?.name ?? '' }));
           }}
           className="border rounded-md px-3 py-2 outline-none focus:ring-1 focus:ring-red-600 bg-white"

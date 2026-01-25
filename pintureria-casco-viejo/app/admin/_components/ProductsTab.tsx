@@ -88,6 +88,7 @@ export default function ProductsTab() {
       price: 0,
       image: '',
       category: '',
+      stock: 0,
       description: '',
     });
   };
@@ -120,6 +121,7 @@ export default function ProductsTab() {
               <th className="text-left px-4 py-2">Nombre</th>
               <th className="text-left px-4 py-2">Categoría</th>
               <th className="text-left px-4 py-2">Precio</th>
+              <th className="text-left px-4 py-2">Stock</th>
               <th className="text-left px-4 py-2">Acciones</th>
             </tr>
           </thead>
@@ -142,6 +144,7 @@ export default function ProductsTab() {
                   <td className="px-4 py-2 font-medium text-gray-900">{p.name}</td>
                   <td className="px-4 py-2 text-gray-600">{p.category}</td>
                   <td className="px-4 py-2 text-gray-900">${p.price}</td>
+                  <td className="px-4 py-2 text-gray-900">{p.stock ?? 0}</td>
                   <td className="px-4 py-2">
                     <div className="flex items-center gap-2">
                       <button

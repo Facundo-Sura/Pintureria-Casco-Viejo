@@ -1,7 +1,7 @@
 export type TabKey = 'productos' | 'ventas' | 'usuarios';
 
 export interface Category {
-  id: string;
+  id: string | number;
   name: string;
 }
 

@@ -13,7 +13,7 @@ export default function ProductsPage() {
   useEffect(() => {
     async function fetchAll() {
       try {
-        const res = await fetch('http://localhost:8080/products');
+        const res = await fetch('http://localhost:8080/api/products');
         if (!res.ok) throw new Error('failed');
         const data = await res.json();
         setProducts(Array.isArray(data) ? data : []);

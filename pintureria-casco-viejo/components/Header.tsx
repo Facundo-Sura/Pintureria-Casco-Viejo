@@ -8,6 +8,7 @@ import { useCart } from "../context/CartContext";
 import { User, ShoppingCart, Menu, X } from "lucide-react";
 
 const categories = [
+  { name: "Todos", href: "/products" },
   { name: "Casa", href: "/casa" },
   { name: "Oficina", href: "/oficina" },
   { name: "Automotor", href: "/automotor" },

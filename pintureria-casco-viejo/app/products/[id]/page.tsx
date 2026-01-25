@@ -18,7 +18,7 @@ interface Comment {
 // Helper to fetch single product
 async function getProduct(id: string): Promise<Product | null> {
   try {
-    const res = await fetch(`http://localhost:8080/products/${id}`);
+    const res = await fetch(`http://localhost:8080/api/products/${id}`);
     if (!res.ok) return null;
     return await res.json();
   } catch (error) {

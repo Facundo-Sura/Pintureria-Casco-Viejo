@@ -13,7 +13,7 @@ export function FeaturedProducts() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await fetch('http://localhost:8080/products');
+        const res = await fetch('http://localhost:8080/api/products');
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         
