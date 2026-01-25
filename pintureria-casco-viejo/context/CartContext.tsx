@@ -9,6 +9,10 @@ export interface Product {
   image: string;
   category: string;
   description?: string;
+  stock?: number;
+  brand?: string;
+  images?: string[];
+  public_images_ids?: string[];
 }
 
 export interface CartItem extends Product {
