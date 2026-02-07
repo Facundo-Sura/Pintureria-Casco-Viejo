@@ -6,8 +6,8 @@ const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/', getAllProducts);
-router.get('/:id', getProductByPk);
 router.get('/search', searchProducts);
+router.get('/:id', getProductByPk);
 router.post('/', upload.array('archivos'), createNewProduct);
 router.put('/:id', upload.array('archivos'), updateProduct);
 router.delete('/:id', deleteProduct);
