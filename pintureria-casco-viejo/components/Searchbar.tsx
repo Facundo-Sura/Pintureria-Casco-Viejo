@@ -1,12 +1,28 @@
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 export default function Searchbar() {
+  const [query, setQuery] = useState("");
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (query.trim()) {
+      router.push(`/products?search=${encodeURIComponent(query.trim())}`);
+    }
+  };
+
   return (
-    <form className="border border-zinc-300 rounded-full p-2 w-full flex items-center bg-gray-50">
+    <form onSubmit={handleSearch} className="border border-zinc-300 rounded-full p-2 w-full flex items-center bg-gray-50">
       <input 
         type="text" 
         className="outline-none w-full px-4 bg-transparent text-sm" 
         placeholder="Buscar productos..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
       />
-      <button className="p-2 text-gray-500 hover:text-red-600 transition-colors">
+      <button type="submit" className="p-2 text-gray-500 hover:text-red-600 transition-colors">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"

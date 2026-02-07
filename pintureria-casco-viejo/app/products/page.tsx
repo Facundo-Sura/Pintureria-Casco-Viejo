@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useCart, Product } from '../../context/CartContext';
 import { ArrowLeft } from 'lucide-react';
 
@@ -9,11 +10,19 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('search');
 
   useEffect(() => {
-    async function fetchAll() {
+    async function fetchProducts() {
+      setLoading(true);
       try {
-        const res = await fetch('http://localhost:8080/api/products');
+        let url = '/api/proxy/products';
+        if (searchQuery) {
+          url = `/api/proxy/products/search?name=${encodeURIComponent(searchQuery)}`;
+        }
+        
+        const res = await fetch(url);
         if (!res.ok) throw new Error('failed');
         const data = await res.json();
         setProducts(Array.isArray(data) ? data : []);
@@ -23,8 +32,8 @@ export default function ProductsPage() {
         setLoading(false);
       }
     }
-    fetchAll();
-  }, []);
+    fetchProducts();
+  }, [searchQuery]);
 
   if (loading) {
     return (
@@ -43,8 +52,12 @@ export default function ProductsPage() {
         </Link>
 
         <div className="w-full mb-6">
-          <h1 className="text-4xl font-bold mb-2 text-gray-900">Todos los Productos</h1>
-          <p className="text-xl text-gray-600">Explora todo nuestro catálogo.</p>
+          <h1 className="text-4xl font-bold mb-2 text-gray-900">
+            {searchQuery ? `Resultados para: "${searchQuery}"` : 'Todos los Productos'}
+          </h1>
+          <p className="text-xl text-gray-600">
+            {searchQuery ? `Mostrando ${products.length} resultados` : 'Explora todo nuestro catálogo.'}
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
